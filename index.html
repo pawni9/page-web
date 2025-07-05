@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #fff; /* Light mode background */
+            font-family: 'Cairo', Arial, sans-serif;
+            color: #181818; /* Light mode text color */
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-container {
+            position: relative;
+            background: rgba(255,255,255,0.85); /* Light mode: white, slightly transparent */
+            border-radius: 16px;
+            box-shadow: 0 8px 32px #0008;
+            padding: 36px 28px 24px 28px;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            box-sizing: border-box;
+            color: #181818; /* Light mode text */
+        }
+        .form-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 3px;
+            border-radius: 18px;
+            z-index: -1;
+            background: linear-gradient(270deg, #1db954, #17a74a, #2980b9, #8e44ad, #e67e22, #c0392b, #1db954);
+            background-size: 1200% 1200%;
+            animation: borderMove 8s linear infinite;
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        @keyframes borderMove {
+            0% {background-position:0% 50%}
+            50% {background-position:100% 50%}
+            100% {background-position:0% 50%}
+        }
+        .form-container h2 {
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: inherit;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="password"] {
+            background: #fff;
+            color: #181818;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 18px;
+            font-size: 17px;
+            transition: border 0.2s, background 0.2s, color 0.2s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border: 1.5px solid #1db954;
+            outline: none;
+        }
+        input[type="submit"] {
+            background: linear-gradient(90deg, #1db954 60%, #17a74a 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(90deg, #17a74a 60%, #1db954 100%);
+        }
+        .register-link {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 15px;
+            color: inherit;
+        }
+        .register-link a {
+            color: #1db954;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .dark-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: #232323;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 22px;
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px #0005;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            z-index: 100;
+        }
+        .dark-toggle-btn:hover {
+            background: #1db954;
+            color: #fff;
+        }
+        /* Dark mode styles */
+        body.dark-mode {
+            background: #000 !important; /* Pure black background */
+            color: #f5f5f5 !important;   /* Almost white text */
+        }
+        body.dark-mode .form-container {
+            background: rgba(30,30,30,0.85); /* Dark, slightly transparent */
+            color: #f5f5f5;
+        }
+        body.dark-mode input[type="text"], 
+        body.dark-mode input[type="password"] {
+            background: #181818;
+            color: #f5f5f5;
+            border-color: #333;
+        }
+        body.dark-mode input[type="submit"] {
+            background: linear-gradient(90deg, #1db954 60%, #0e7c3a 100%);
+            color: #fff;
+        }
+        body.dark-mode .register-link a {
+            color: #1db954;
+        }
+        body.dark-mode .dark-toggle-btn {
+            background: #181818;
+            color: #fff;
+        }
+        body.dark-mode .dark-toggle-btn:hover {
+            background: #1db954;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" name="account_name" id="account_name" placeholder="Account Name" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <div class="register-link">
+            <p>Don't have an account? <a href="add.account.html">Register here</a></p>
+        </div>
+    </div>
+    <!-- زر الوضع المظلم في أسفل الصفحة -->
+    <button class="dark-toggle-btn" onclick="toggleDarkMode()">
+        <span id="dark-icon">🌙</span> <span id="dark-text">Dark Mode</span>
+    </button>
+    <script>
+        window.onload = function() {
+            const mode = localStorage.getItem('mode');
+            if (mode === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-icon').textContent = "☀️";
+                document.getElementById('dark-text').textContent = "Light Mode";
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('dark-icon').textContent = "🌙";
+                document.getElementById('dark-text').textContent = "Dark Mode";
+            }
+        };
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const icon = document.getElementById('dark-icon');
+            const text = document.getElementById('dark-text');
+            if (body.classList.toggle('dark-mode')) {
+                icon.textContent = "☀️";
+                text.textContent = "Light Mode";
+                localStorage.setItem('mode', 'dark');
+            } else {
+                icon.textContent = "🌙";
+                text.textContent = "Dark Mode";
+                localStorage.setItem('mode', 'light');
+            }
+        }
+    </script>
+</body>
+</html>
